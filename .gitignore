@@ -7,3 +7,17 @@
 .DS_Store
 package-lock.json
 /out
+
+.idea/
+.vscode/
+.claude/
+Thumbs.db
+*.log
+.DS_Store
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.directory
+.Trash-*
+*~

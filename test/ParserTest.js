@@ -2,7 +2,7 @@ import ReleaseParser from '../ReleaseParser.js'
 
 /**
  * This file is just used for on the fly testing and debugging and is not needed elsewhere.
- * 
+ *
  * @author Wellington Estevo
  * @version 1.2.3
  */

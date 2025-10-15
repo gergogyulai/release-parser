@@ -4,9 +4,9 @@ import assert from 'assert'
 /**
  * This is the main test file.
  * This are hand selected, at some point 'more complex' releases that need to pass the test.
- * 
+ *
  * @author Wellington Estevo
- * @version 1.5.0
+ * @version 1.5.1
  */
 
 describe( 'ReleaseParser', function()
@@ -395,6 +395,14 @@ describe( 'ReleaseParser', function()
 		)
 	})
 
+	it( 'TV #17 - Multiple episodes: E01-E02', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'The.Last.Frontier.2025.S01E01-E02.1080p.WEB.H264-ETHEL', 'TV' ).toString(),
+			'Title: The Last Frontier / Group: ETHEL / Year: 2025 / Season: 1 / Episode: 01-02 / Source: WEB / Format: h264 / Resolution: 1080p / Type: TV'
+		)
+	})
+
 	// TV SPorts
 	it( 'TV Sports #1', () =>
 	{
@@ -444,7 +452,7 @@ describe( 'ReleaseParser', function()
 		)
 	})
 
-	
+
 
 	// Anime
 	it( 'Anime #1', () =>
@@ -487,7 +495,7 @@ describe( 'ReleaseParser', function()
 		)
 	})
 
-	
+
 
 	// Music
 	it( 'Music #1', () =>

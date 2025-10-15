@@ -13,3 +13,6 @@ changelog.txt
 .DS_Store
 package-lock.json
 /out
+.idea/
+.claude/
+.vscode/

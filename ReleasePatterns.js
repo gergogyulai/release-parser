@@ -1,8 +1,8 @@
 /**
  * ReleasePatterns - All needed patterns for properly parsing releases.
- * 
+ *
  * @author Wellington Estevo
- * @version 1.5.0
+ * @version 1.5.1
  */
 
 // Reusable vars
@@ -37,7 +37,7 @@ const patterns =
 	//REGEX_OS : ''
 	// Episode pattern matches: S01E01 / 1x01 / E(PS)1 / OVA1 / F123 / Folge_123 / Episode 1 / Issue 1 etc.
 	// Good for tv and audiobook rls
-	REGEX_EPISODE : '(?:(?:s\\d+[._-]?)?(?:ep?|eps[._-]?|episode[._-]?|o[av]+[._-]?|f(?:olge[._-]?)?)([\\d_-]+)|(?:\\d+x)(\\d+))',
+	REGEX_EPISODE : `(?:(?:s\\d+[._-]?)?(?:ep?s?|episode|o[av]+|f(?:olge)?)[._-]?([\\de_-]+)|(?:\\d+x)(\\d+))`,
 	REGEX_EPISODE_OTHER : '(?:ep?|se[._-]?|eps[._-]?|episode[._-]?|f(?:olge[._-]?)?|band[._-]?|issue[._-]?|ausgabe[._-]?|n[or]?[._-]?|(?:silber[._-])?edition[._-]?|sets?[._-]?)([\\d_-]+)',
 	REGEX_EPISODE_TV : regexEpisodeTv,
 	// For Disc numbers: Disc1 / DVD1 / CD1 / (S01)D01
@@ -356,10 +356,8 @@ const patterns =
 		'NEC PC Engine': 'PCECD',
 		'Nokia N-Gage': '(?:nokia[._-])?n.?gage(?:[._-]qd)?',
 		'Playstation': 'PS[X1]?(cd)?',
-		'Playstation 2': '(?:jap|\\d)?PS2(?:.?[ed][vw]d[[:alnum:]]*|.?cd[[:alnum:]]*|.?rip|.?hdd)?',
+		'Playstation 2': '(?:jap|\\d)?PS2(?:.?[ed][vw]dr?[[:alnum:]]*|.?cd[[:alnum:]]*|.?rip|.?hdd)?',
 		'Playstation 3': 'PS3(?:.?bd[[:alnum:]]*)?',
-		'Playstation 2': 'PS2(?:.?dvdr?|cd)?',
-		'Playstation 3': 'PS3(?:.?bd)?',
 		'Playstation 4': 'PS4',
 		'Playstation 5': 'PS5',
 		'Playstation Portable': 'PSP',
@@ -377,7 +375,7 @@ const patterns =
 		// Higher prio (last has higher prio) for Wii + NDS, because of virtual console and release titles containing older consoles
 		'Nintendo DS': '3?DS(?:.dsi)?',
 		'Nintendo 3DS': '(?:vc[._](?:\\w+[._])?|new|n)?3DS(?!.max|max|.max\\d|max\\d)(?:ware)?',
-		'Nintendo WII': '(?:vc[._](?:\\w+[._])?)?Wiii?(.?dvd[r\\d]?|clone|ware)?', 
+		'Nintendo WII': '(?:vc[._](?:\\w+[._])?)?Wiii?(.?dvd[r\\d]?|clone|ware)?',
 		'Nintendo WII-U': '(?:vc[._](?:\\w+[._])?)?WII[._-]?U',
 	},
 
@@ -676,7 +674,7 @@ const patterns =
 		'Superleague.Formula', 'Nascar.(?:cup|truck|xfinity|monster|raceday|camping|america|sprint|nextel|busch|\\d{4})', '(?:ntt.)?Indycar\.(series|racing|\\d{4})',
 		'DTM.(\\d{2,4}|spa|lauszitzring|gp\\d+|\\d+.lauf)', // Deutsche Tourenwagen Masters
 		'DTC.\\d{4}', // Danish Touringcar Championship
-		'[ew]rc[._-](?:\\d{4})', 
+		'[ew]rc[._-](?:\\d{4})',
 		'(?:[ew]rc|rx)[._-]fia[._-](?:world|european).rally(?:cross)?.championship.\\d{4}', // Rallye
 		'Supercars.championship', 'V8.Supercars.\\d{4}', 'Porsche.(Carrera|sprint|supercup)', 'Volkswagen.Racing.Cup', 'W.series.\\d{4}',
 		'IMSA', 'Nitro[.]RX', 'Extreme[.]e',

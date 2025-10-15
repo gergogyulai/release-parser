@@ -1,15 +1,15 @@
 # __Scene Release Parser__
 
 ![Made with JavaScript](https://img.shields.io/static/v1?label&message=JavaScript&color=f0db4f&logo=javascript&logoColor=323330)
-![npm package version: v1.0.3](https://img.shields.io/npm/v/release-parser?color=CC3534&logo=npm)
-![Minified npm package size: 9.09 kB](https://img.shields.io/bundlephobia/minzip/release-parser?color=CC3534&logo=npm)
+![npm package version: v1.5.1](https://img.shields.io/npm/v/release-parser?color=CC3534&logo=npm)
+![Minified npm package size: 16.2 Kb](https://img.shields.io/bundlephobia/minzip/release-parser?color=CC3534&logo=npm)
 
 ## __A library for parsing scene release names into simpler, reusable data.__
 
 _Like it? I'd appreciate the support :)_
 
-[![Follow on Twitter](https://img.shields.io/static/v1?label=Follow%20on&message=Twitter&color=1DA1F2&logo=twitter&logoColor=fff)](https://propz.de/twitter/)
 [![Watch on Twitch](https://img.shields.io/static/v1?label=Watch%20on&message=Twitch&color=bf94ff&logo=twitch&logoColor=fff)](https://propz.de/twitch/)
+[![Sub on YouTube](https://img.shields.io/static/v1?label=Sub%20on&message=YouTube&color=ff0000&logo=youtube&logoColor=fff)](https://propz.de/youtube/)
 [![Join on Discord](https://img.shields.io/static/v1?label=Join%20on&message=Discord&color=7289da&logo=discord&logoColor=fff)](https://propz.de/discord/)
 [![Donate on Ko-Fi](https://img.shields.io/static/v1?label=Donate%20on&message=Ko-Fi&color=ff5f5f&logo=kofi&logoColor=fff)](https://propz.de/kofi/)
 

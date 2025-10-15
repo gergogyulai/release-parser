@@ -2,10 +2,10 @@ import patterns from './ReleasePatterns.js'
 
 /**
  * ReleaseParser - A library for parsing scene release names.
- * 
+ *
  * @author Wellington Estevo
- * @version 1.5.0
- * 
+ * @version 1.5.1
+ *
  * @module ReleaseParser
  * @param {string} releaseName - Original release name.
  * @param {string} section - Optional: Original release section for even better parsing.
@@ -15,7 +15,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 {
 	/**
 	 * All parsed informations.
-	 * 
+	 *
 	 * @public
 	*/
 	let data = {
@@ -44,7 +44,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Object toString() override: allows the object to decide how it will react when it is treated like a string.
-	 * 
+	 *
 	 * @public
 	 * @return {string} Stringified attribute values.
 	 */
@@ -164,10 +164,10 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		return classString
 	}
 
-		
+
 	/**
 	 * Parse release language/s.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseLanguage = () =>
@@ -217,7 +217,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 			} )
 
 			// Check if lang object not empty
-			// https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object 
+			// https://stackoverflow.com/questions/679915/how-do-i-test-for-an-empty-javascript-object
 			if ( Object.keys(languages).length > 0 ) set( 'language', languages )
 		}
 	}
@@ -225,7 +225,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release date.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseDate = () =>
@@ -298,7 +298,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 			// Put all months together
 			let allMonths = ''
-			for ( const [key, value] of Object.entries( patterns.MONTHS ) )
+			for ( const [_key, value] of Object.entries( patterns.MONTHS ) )
 			{
 				allMonths = allMonths ? allMonths + '|' + value : value
 			}
@@ -366,7 +366,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release year.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseYear = () =>
@@ -398,7 +398,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release device.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseDevice = () =>
@@ -418,7 +418,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release flags.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseFlags = () =>
@@ -446,7 +446,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse the release group.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseGroup = () =>
@@ -465,7 +465,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release version (software, games, etc.).
-	 * 
+	 *
 	 * @private
 	 */
 	const parseVersion = () =>
@@ -498,7 +498,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release source.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseSource = () =>
@@ -540,7 +540,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release format/encoding.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseFormat = () =>
@@ -561,7 +561,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release resolution.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseResolution = () =>
@@ -582,7 +582,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release audio.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseAudio = () =>
@@ -598,7 +598,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release operating system.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseOs = () =>
@@ -613,7 +613,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release season.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseSeason = () =>
@@ -631,7 +631,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 				if ( season )
 				{
 					set( 'season', parseInt( season ) )
-		
+
 					// We need to exclude some nokia devices, would be falsely parsed as season (S40 or S60)
 					if (
 						( season == '40' || season == '60' ) &&
@@ -651,7 +651,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release episode.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseEpisode = () =>
@@ -666,7 +666,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		)
 		{
 			let regexPattern = '/[._-]' + patterns.REGEX_EPISODE + '[._-]/i'
-			
+
 			if ( isType( 'ebook' ) || isType( 'abook' ) || isType( 'music' ) )
 			{
 				regexPattern = '/[._-]' + patterns.REGEX_EPISODE_OTHER + '[._-]/i'
@@ -691,7 +691,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 					}
 					else
 					{
-						episode = sanitize( episode.replace( /[aA_\.]+/, '-' ) )
+						episode = sanitize( episode.replace( /[aAeE_.-]+/, '-' ) )
 					}
 					set( 'episode', episode )
 				}
@@ -712,7 +712,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parses Release country and strips it from title.
-	 * 
+	 *
 	 * @private
 	 * @return {void}
 	 */
@@ -742,7 +742,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	 * Check if release is of specific type.
 	 *
 	 * @private
-	 * @return {bool}
+	 * @return {boolean}
 	 */
 	const isType = ( type = '' ) =>
 	{
@@ -766,7 +766,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 			if ( releaseName.match( ( '/[._(-]bookware[._)-]/i' ).toRegExp() ) )
 				return true
-	
+
 			let isBookware = false
 			patterns.BOOKWARE.forEach( value =>
 			{
@@ -774,7 +774,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 				if ( releaseName.match( pattern ) )
 					isBookware = true
 			})
-	
+
 			return isBookware
 		}
 		else if ( type === 'music' )
@@ -800,7 +800,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 				return true
 
 			return false
-			
+
 		}
 	}
 
@@ -833,7 +833,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	const guessTypeByParsedAttributes = () =>
 	{
 		let type = ''
-		
+
 		// Match bookware
 		if ( isType( 'bookware' ) )
 		{
@@ -958,7 +958,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 			get( 'episode' ) ||
 			get( 'season' ) ||
 			hasAttribute( patterns.sourcesTv, 'source' )
-		) 
+		)
 		{
 			// Default to TV
 			type = 'TV'
@@ -1079,7 +1079,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Parse release title.
-	 * 
+	 *
 	 * @private
 	 */
 	const parseTitle = () =>
@@ -1090,24 +1090,24 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		// Main title vars
 		let [ title, titleExtra ] = ''
 		// Some vars for better debugging which regex pattern was used
-		let [ regexPattern, regexUsed, matches ] = ''
+		let [ regexPattern, _regexUsed, matches ] = ''
 
 		// Music artist + release title (album/single/track name, etc.)
 		if ( type === 'music' || type === 'abook' || type === 'musicvideo' )
 		{
 			// Setup regex pattern
 			regexPattern = patterns.REGEX_TITLE_MUSIC
-			regexUsed = 'REGEX_TITLE_MUSIC'
+			//regexUsed = 'REGEX_TITLE_MUSIC'
 
 			if ( type === 'abook' )
 			{
 				regexPattern = patterns.REGEX_TITLE_ABOOK
-				regexUsed = 'REGEX_TITLE_ABOOK'
+				//regexUsed = 'REGEX_TITLE_ABOOK'
 			}
 			else if ( type === 'musicvideo' )
 			{
 				regexPattern = patterns.REGEX_TITLE_MVID
-				regexUsed = 'REGEX_TITLE_MVID'
+				//regexUsed = 'REGEX_TITLE_MVID'
 			}
 
 			// Search and replace pattern in regex pattern for better matching
@@ -1138,18 +1138,18 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 					// Unset first item before the loop
 					titleArray.splice( 0, 1 )
-					
+
 					// Separator
 					let separator = type === 'abook' ? ' - ' : '-'
 
 					// Loop remaining parts and set title extra
 					titleArray.forEach( ( titlePart, index ) =>
 					{
-						
+
 						// We need the . for proper matching cleanup episode.
 						titlePart = cleanup( '.' + titlePart + '.', 'episode' )
 						titlePart = titlePart.replace( /^\.|\.$/gm,'' )
-						
+
 						if ( titlePart )
 						{
 							// First index is ok
@@ -1157,7 +1157,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 								index === 0 ||
 								(
 									// Other indexes...
-									index > 0 && 
+									index > 0 &&
 									(
 										// ...only with certain chars
 										titlePart.includes( '_' ) ||
@@ -1183,7 +1183,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		{
 			// Setup regex pattern
 			regexPattern = patterns.REGEX_TITLE_APP
-			regexUsed = 'REGEX_TITLE_APP'
+			//regexUsed = 'REGEX_TITLE_APP'
 
 			// Search and replace pattern in regex pattern for better matching
 			//regexPattern = cleanupPattern( releaseName, regexPattern, [ 'device', 'flags', 'format', 'group', 'language', 'os', 'version' ] )
@@ -1206,7 +1206,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		{
 			// Setup regex pattern
 			regexPattern = patterns.REGEX_TITLE_TV.toRegExp()
-			regexUsed = 'REGEX_TITLE_TV'
+			//regexUsed = 'REGEX_TITLE_TV'
 
 			// Only needed here for releases that have episodes
 			// Maybe year is before episode and have to be removed
@@ -1223,7 +1223,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 				// Build pattern and try to get episode title
 				// So search and replace needed data to match properly.
 				regexPattern = patterns.REGEX_TITLE_TV_EPISODE
-				regexUsed += ' + REGEX_TITLE_TV_EPISODE'
+				//regexUsed += ' + REGEX_TITLE_TV_EPISODE'
 
 				// Search and replace pattern in regex pattern for better matching
 				//regexPattern = cleanupPattern( releaseName, regexPattern, [ 'audio', 'flags', 'format', 'language', 'resolution', 'source' ] )
@@ -1233,13 +1233,29 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 				matches = releaseNameCleaned.match( regexPattern.toRegExp() )
 
 				titleExtra = matches && matches[1] !== '.' ? matches[1] : ''
+
+				// If multiple episodes (1-2) episodes get wrongfully parse as title, so remove it
+				// The regex is 'too' ungreedy.
+				// Title extra would only be the second episode number
+				// and it isn't always numeric: 8 / e8 / e08
+				if ( titleExtra.replaceAll( /[a-z]+/gi, '' ).isNumeric() )
+				{
+					if (
+						titleExtra.length <= 3 &&
+						get( 'episode' ).includes( parseInt( titleExtra.replaceAll( /[a-z]+/gi, '' ) ) )
+					)
+					{
+						titleExtra = '';
+					}
+				}
+
 			}
 			// Try to match Sports match
 			else
 			{
 				// Setup regex pattern
 				regexPattern = patterns.REGEX_TITLE_TV_DATE
-				regexUsed = 'REGEX_TITLE_TV_DATE'
+				//regexUsed = 'REGEX_TITLE_TV_DATE'
 
 				// Search and replace pattern in regex pattern for better matching
 				regexPattern = cleanupPattern( releaseName, regexPattern, [ 'flags', 'format', 'language', 'resolution', 'source', 'regex_date', 'year' ] )
@@ -1265,7 +1281,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		{
 			// Setup regex pattern
 			regexPattern = patterns.REGEX_TITLE_TV
-			regexUsed = 'REGEX_TITLE_TV'
+			//regexUsed = 'REGEX_TITLE_TV'
 
 			// Match title
 			matches = releaseNameCleaned.match( regexPattern.toRegExp() )
@@ -1278,7 +1294,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 				// Build pattern and try to get episode title
 				// So search and replace needed data to match properly.
 				regexPattern = patterns.REGEX_TITLE_TV_EPISODE
-				regexUsed += ' + REGEX_TITLE_TV_EPISODE'
+				//regexUsed += ' + REGEX_TITLE_TV_EPISODE'
 
 				// Search and replace pattern in regex pattern for better matching
 				releaseNameCleaned = cleanup( releaseNameCleaned, [ 'flags', 'format', 'language', 'resolution', 'source', 'year' ] )
@@ -1300,7 +1316,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 			{
 				// Setup regex pattern
 				regexPattern = patterns.REGEX_TITLE_TV.toRegExp()
-				regexUsed = 'REGEX_TITLE_TV'
+				//regexUsed = 'REGEX_TITLE_TV'
 
 				// Match title
 				matches = releaseNameCleaned.match( regexPattern )
@@ -1313,7 +1329,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 					// Build pattern and try to get episode title
 					// So search and replace needed data to match properly.
 					regexPattern = patterns.REGEX_TITLE_TV_EPISODE
-					regexUsed += ' + REGEX_TITLE_TV_EPISODE'
+					//regexUsed += ' + REGEX_TITLE_TV_EPISODE'
 
 					// Search and replace pattern in regex pattern for better matching
 					//regexPattern = cleanupPattern( releaseName, regexPattern, [ 'audio', 'flags', 'format', 'language', 'resolution', 'source' ] )
@@ -1331,7 +1347,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 			{
 				// Setup regex pattern
 				regexPattern = get( 'date' ) ? patterns.REGEX_TITLE_XXX_DATE : patterns.REGEX_TITLE_XXX
-				regexUsed = get( 'date' ) ? 'REGEX_TITLE_XXX_DATE' : 'REGEX_TITLE_XXX'
+				//regexUsed = get( 'date' ) ? 'REGEX_TITLE_XXX_DATE' : 'REGEX_TITLE_XXX'
 
 				// Search and replace pattern in regex pattern for better matching
 				regexPattern = cleanupPattern( releaseName, regexPattern, [ 'flags', 'year', 'language', 'source', 'regex_date', 'regex_date_monthname' ] )
@@ -1357,7 +1373,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		{
 			// Setup regex pattern
 			regexPattern = patterns.REGEX_TITLE_EBOOK
-			regexUsed = 'REGEX_TITLE_EBOOK'
+			//regexUsed = 'REGEX_TITLE_EBOOK'
 
 			// Cleanup release name for better matching
 			releaseNameCleaned = cleanup( releaseNameCleaned, 'episode' )
@@ -1367,7 +1383,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 			// Match title
 			matches = releaseNameCleaned.match( regexPattern.toRegExp() )
-			
+
 			if ( matches )
 			{
 				// Full match
@@ -1400,7 +1416,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		{
 			// Setup regex pattern
 			regexPattern = patterns.REGEX_TITLE_FONT
-			regexUsed = 'REGEX_TITLE_FONT'
+			//regexUsed = 'REGEX_TITLE_FONT'
 
 			// Cleanup release name for better matching
 			releaseNameCleaned = cleanup( releaseNameCleaned, [ 'version', 'os', 'format' ] )
@@ -1419,7 +1435,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		{
 			// Setup regex pattern
 			regexPattern = patterns.REGEX_TITLE_BOOKWARE
-			regexUsed = 'REGEX_TITLE_BOOKWARE'
+			//regexUsed = 'REGEX_TITLE_BOOKWARE'
 
 			// Cleanup release name for better matching
 			releaseNameCleaned = cleanup( releaseNameCleaned, [ 'language', 'version' ] )
@@ -1438,7 +1454,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		{
 			// Setup regex pattern
 			regexPattern = patterns.REGEX_TITLE_TV_DATE
-			regexUsed = 'REGEX_TITLE_TV_DATE'
+			//regexUsed = 'REGEX_TITLE_TV_DATE'
 
 			// Search and replace pattern in regex pattern for better matching
 			regexPattern = cleanupPattern( releaseName, regexPattern, [ 'flags', 'format', 'language', 'resolution', 'source' ] )
@@ -1465,7 +1481,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 			{
 				// Setup regex pattern
 				regexPattern = patterns.REGEX_TITLE_MOVIE
-				regexUsed = 'REGEX_TITLE_MOVIE'
+				//regexUsed = 'REGEX_TITLE_MOVIE'
 
 				// Search and replace pattern in regex pattern for better matching
 				regexPattern = cleanupPattern( releaseName, regexPattern, [ 'audio', 'disc', 'flags', 'format', 'language', 'resolution', 'source', 'year' ] )
@@ -1499,7 +1515,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 					// Some very old (or very wrong named) releases dont have a group at the end.
 					// But I still wanna match them, so we check for the '-'.
 					regexPattern = patterns.REGEX_TITLE
-					regexUsed = 'REGEX_TITLE'
+					//regexUsed = 'REGEX_TITLE'
 
 					// This should be default, because we found the '-'.
 					if ( releaseNameCleaned.includes( '-' ) )
@@ -1530,7 +1546,8 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	 *
 	 * @private
 	 * @param {array} attribute - Attribute to parse.
-	 * @return {mixed} Found attribute value (string or array) or null if couldn't parse attribute.
+	 * @param {string} type
+	 * @return {string|array|null} Found attribute value (string or array) or null if couldn't parse attribute.
 	 */
 	const parseAttribute = ( attribute, type = '' ) =>
 	{
@@ -1587,7 +1604,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 				// All separators
 				let separators = '[._\\-]'
-				let matches, regexPattern = null
+				let matches, regexPattern;
 
 				// Special cases: Some patterns have to match end of release name, so ignore firs regex results
 				if ( pattern.includes( '$' ) )
@@ -1651,7 +1668,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 			// Transform array to string if we have just one value
 			if ( attributeKeys.length === 1 )
 				attributeKeys = attributeKeys.join()
-			
+
 			return attributeKeys
 		}
 		return null
@@ -1662,7 +1679,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	 * Check if release has specified attribute value.
 	 *
 	 * @public
-	 * @param {mixed} values - Attribute values to check for (array or string).
+	 * @param {array|string} values - Attribute values to check for (array or string).
 	 * @param {string} attributeName - Attribute name to check for.
 	 * @return {boolean} If attribute values were found.
 	 */
@@ -1705,12 +1722,12 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 	/**
 	 * Cleanup release name from given attribute.
-	 * 
+	 *
 	 * Mostly needed for better title matching in some cases.
 	 *
 	 * @private
 	 * @param {string} releaseName - Original release name.
-	 * @param {mixed} informations - Informations to clean up (string or array).
+	 * @param {array|string} informations - Informations to clean up (string or array).
 	 * @return {string} Cleaned up release name.
 	 */
 	const cleanup = ( releaseName, informations ) =>
@@ -1837,11 +1854,11 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 							attributes.push( patterns.OS[ informationValue ] )
 						}
 						break
-					
+
 					case 'resolution':
 						attributes.push( patterns.RESOLUTION[ informationValue ] )
 						break
-					
+
 					case 'source':
 						if ( Array.isArray( informationValue ) )
 						{
@@ -1866,7 +1883,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 							attributes.push( patterns.REGEX_VERSION )
 						}
 						break
-					
+
 					case 'year':
 						// We need the simpler year regex for cleanup
 						attributes.push( patterns.REGEX_YEAR_SIMPLE )
@@ -1894,7 +1911,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 								value = value.replace( '$', '' )
 								regexPattern = '/[._-]' + value + '-(?:[\\w.-]+){1,2}$/i'
 							}
-							
+
 							// We need to replace all findings with double dots for proper matching later on.
 							releaseName = releaseName.replace( regexPattern.toRegExp(), '..' )
 
@@ -1917,7 +1934,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	 * @private
 	 * @param {string} releaseName - Original release name.
 	 * @param {string} regexPattern - The pattern to check.
-	 * @param {mixed} informations - The information value to check for (string or array)
+	 * @param {array|string} informations - The information value to check for (string or array)
 	 * @return {string} Cleaned regex pattern.
 	 */
 	const cleanupPattern = ( releaseName, regexPattern, informations ) =>
@@ -1934,13 +1951,13 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		{
 			// Get information value
 			let informationValue = get( information )
-			
+
 			// Get date as value if looking for "daymonth" or "month" (ebooks, imgset, sports)
 			if ( information.includes( 'month' ) || information.includes( 'date' ) )
 				informationValue = get( 'date' )
 
 			// Only do something if it's not empty
-			if ( informationValue && informationValue !== null )
+			if ( informationValue )
 			{
 				let attributes = []
 
@@ -2131,7 +2148,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	{
 		let type = get( 'type' ).toLowerCase()
 		let flags = get( 'flags' )
-		let title = get( 'title' )
+		let _title = get( 'title' )
 
 		if ( type === 'movie' || type === 'tv' )
 		{
@@ -2140,15 +2157,15 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 				get( 'source' ) &&
 				get( 'format' ) &&
 				get( 'resolution' ) &&
-				get( 'source' ) == get( 'format' )
+				get( 'source' ) === get( 'format' )
 			)
 			{
 				set( 'format', null );
 			}
 		}
-	
+
 		if ( type === 'movie' )
-		{			
+		{
 			// Remove version if it's a movie (falsely parsed from release name)
 			if ( get( 'version' ) !== null )
 			{
@@ -2230,7 +2247,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		// Remove NEW flag if part of title
 		/*if ( hasAttribute( 'New', 'flags' ) )
 		{
-			if ( 
+			if (
 				get( 'title' ).toLowerCase().includes( 'new') ||
 				(
 					get( 'title_extra' ) !== null &&
@@ -2321,7 +2338,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	 *
 	 * @public
 	 * @param {string} name - Attribute name.
-	 * @return {mixed} Attribute value (array, string, int, date, boolean) or null if not found.
+	 * @return {array|string|int|date|boolean|null} Attribute value or null if not found.
 	 */
 	const get = ( name ) =>
 	{
@@ -2345,7 +2362,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	 *
 	 * @private
 	 * @param {string} name - Attribute name to set.
-	 * @param {mixed} value - Attribute value to set (array, string, int, date).
+	 * @param {null} value - Attribute value to set (array, string, int, date).
 	 * @return {boolean} If atrribute was succesfully set.
 	 */
 	const set = ( name, value ) =>
@@ -2401,7 +2418,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
  * @param {string} str - String to convert to RegExp.
  * @return {RegExp} Converted RegExp from string.
  */
-String.prototype.toRegExp = function( str )
+String.prototype.toRegExp = function( str = '' )
 {
 	// if the string is not provided, and if it's called directly on the string, we can access the text via 'this'
 	if ( ! str ) str = this
@@ -2422,7 +2439,7 @@ String.prototype.toRegExp = function( str )
  * @param {string} str - String to trim.
  * @return {string} Trimmed string.
  */
-String.prototype.trim = function( char = ' ', str )
+String.prototype.trim = function( char = ' ', str = '' )
 {
 	if ( ! str ) str = this
 	return str.replace( ('/^[' + char + ']+/i').toRegExp(), '' ).replace( ('/[' + char +']+$/i').toRegExp(), '' )
@@ -2436,7 +2453,7 @@ String.prototype.trim = function( char = ' ', str )
  * @param {string} str - String to check.
  * @return {boolean} Check result.
  */
-String.prototype.isNumeric = function( str )
+String.prototype.isNumeric = function( str = '' )
 {
 	if ( ! str ) str = this
 	return /^\d+$/.test( str )
@@ -2450,7 +2467,7 @@ String.prototype.isNumeric = function( str )
  * @param {string} str - String to format.
  * @return {string} Formatted String.
  */
-String.prototype.capitalizeWords = function( str )
+String.prototype.capitalizeWords = function( str = '' )
 {
 	if ( ! str ) str = this
 	str = str.toLowerCase().replace( /\b[a-z]/g, char => char.toUpperCase() )
@@ -2464,7 +2481,7 @@ String.prototype.capitalizeWords = function( str )
  * @param {string} str - String to format.
  * @return {string} Formatted String.
  */
-String.prototype.capitalizeWord = function( str )
+String.prototype.capitalizeWord = function( str = '' )
 {
 	if ( ! str ) str = this
 	return str.charAt(0).toUpperCase() + str.slice(1);
