@@ -43,7 +43,7 @@ const patterns =
 	// For Disc numbers: Disc1 / DVD1 / CD1 / (S01)D01
 	REGEX_DISC : regexDisc,
 	// Season pattern matches: S01E01 / 1x01 / S01D01
-	REGEX_SEASON : '/[._-](?:(?:[ST]|saison[._-]?|staffel[._-]?|temp[._-]?)(\\d+)[._-]?(?:(?:ep?|eps[._-]?|episode[._-]?|f(?:olge[._-]?)|d|di[cks][cks]|cd|dvd)\\d+)?|(\\d+)(?:x\\d+))[._-]/i',
+	REGEX_SEASON : '/[._-](?:(?:[ST]|season[._-]?|saison[._-]?|staffel[._-]?|temp[._-]?)(\\d+)[._-]?(?:(?:ep?|eps[._-]?|episode[._-]?|f(?:olge[._-]?)|d|di[cks][cks]|cd|dvd)\\d+)?|(\\d+)(?:x\\d+))[._-]/i',
 	// Basic title pattern
 	REGEX_TITLE : regexTitle,
 	// Good for Ebooks

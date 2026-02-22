@@ -403,6 +403,14 @@ describe( 'ReleaseParser', function()
 		)
 	})
 
+	it( 'TV #18 - Season token should not be part of title', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Breaking.Bad.SEASON.01.S01.COMPLETE.1080p.10bit.BluRay.6CH.x265', 'TV' ).toString(),
+			'Title: Breaking Bad / Group: NOGRP / Season: 1 / Flags: Complete / Source: Bluray / Format: x265 / Resolution: 1080p / Audio: 10BIT / Type: TV'
+		)
+	})
+
 	// TV SPorts
 	it( 'TV Sports #1', () =>
 	{

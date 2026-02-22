@@ -1208,7 +1208,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 			// Only needed here for releases that have episodes
 			// Maybe year is before episode and have to be removed
-			let releaseNameNoYear = cleanup( releaseNameCleaned, [ 'disc', 'format', 'year' ] )
+			let releaseNameNoYear = cleanup( releaseNameCleaned, [ 'disc', 'format', 'season', 'year' ] )
 
 			// Match title
 			matches = releaseNameNoYear.match( regexPattern )
@@ -1865,6 +1865,10 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 
 					case 'resolution':
 						attributes.push( patterns.RESOLUTION[ informationValue ] )
+						break
+
+					case 'season':
+						attributes.push( '(?:season|saison|staffel|temp)[._-]?0?' + informationValue )
 						break
 
 					case 'source':
