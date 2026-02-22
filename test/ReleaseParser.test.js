@@ -798,4 +798,120 @@ describe( 'ReleaseParser', function()
 			'Artist: T / Title: Pain ft. Kehlani-I Like Dat (Jimmy Kimmel Live 2021-06-09) / Group: SRPx / Year: 2021 / Date: 09.06.2021 / Source: DDC / Format: x264 / Resolution: 720p / Type: MusicVideo'
 		)
 	})
+
+
+	// Space separator handling
+	it( 'Space separator #1 - TV show with spaces should parse same as dots', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Dona Beja S01E09 1080p AMZN WEB-DL DD 5 1 H 264-playWEB' ).toString(),
+			ReleaseParser( 'Dona.Beja.S01E09.1080p.AMZN.WEB-DL.DD.5.1.H.264-playWEB' ).toString()
+		)
+	})
+
+	it( 'Space separator #2 - Movie with spaces', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'The Matrix 1999 1080p BluRay x264-GROUP' ).toString(),
+			'Title: The Matrix / Group: GROUP / Year: 1999 / Source: Bluray / Format: x264 / Resolution: 1080p / Type: Movie'
+		)
+	})
+
+	it( 'Space separator #3 - TV show with spaces and section', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Breaking Bad S05E16 720p WEB-DL AAC2 0 H 264-GRP', 'tv' ).toString(),
+			ReleaseParser( 'Breaking.Bad.S05E16.720p.WEB-DL.AAC2.0.H.264-GRP', 'tv' ).toString()
+		)
+	})
+
+	it( 'Space separator #4 - Mixed spaces and dots should normalize', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Some.Movie 2020 1080p WEB-DL x264-GROUP' ).toString(),
+			'Title: Some Movie / Group: GROUP / Year: 2020 / Source: WEB / Format: x264 / Resolution: 1080p / Type: Movie'
+		)
+	})
+
+
+	// Parenthesized group notation
+	it( 'Parenthesized group #1 - Group in parens at end', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Some.Movie.2020.1080p.WEB-DL.x264.(GROUP)' ).toString(),
+			'Title: Some Movie / Group: GROUP / Year: 2020 / Source: WEB / Format: x264 / Resolution: 1080p / Type: Movie'
+		)
+	})
+
+	it( 'Parenthesized group #2 - Group in parens with spaces', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Some Movie 2020 1080p WEB-DL x264 (GROUP)' ).toString(),
+			'Title: Some Movie / Group: GROUP / Year: 2020 / Source: WEB / Format: x264 / Resolution: 1080p / Type: Movie'
+		)
+	})
+
+	it( 'Parenthesized group #3 - Standard group takes precedence', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Pay.the.Ghost.2015.1080p.HULU.WEB-DL.DDP.5.1.H.264-PiRaTeS[TGx]', 'PRE' ).toString(),
+			'Title: Pay the Ghost / Group: PiRaTeS[TGx] / Year: 2015 / Source: Hulu / Resolution: 1080p / Audio: Dolby Digital Plus, 5.1 / Type: Movie'
+		)
+	})
+
+	it( 'Parenthesized group #4 - Bracketed group at end', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Some.Movie.2020.1080p.WEB-DL.x264[GROUP]' ).toString(),
+			'Title: Some Movie / Group: GROUP / Year: 2020 / Source: WEB / Format: x264 / Resolution: 1080p / Type: Movie'
+		)
+	})
+
+	it( 'Parenthesized group #5 - Bracketed group with spaces', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Some Movie 2020 1080p WEB-DL x264 [GROUP]' ).toString(),
+			'Title: Some Movie / Group: GROUP / Year: 2020 / Source: WEB / Format: x264 / Resolution: 1080p / Type: Movie'
+		)
+	})
+
+	it( 'Parenthesized group #6 - Bracketed group with dots before', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Another.Release.2021.720p.HDTV.x264.[TGx]' ).toString(),
+			'Title: Another Release / Group: TGx / Year: 2021 / Source: HDTV / Format: x264 / Resolution: 720p / Type: Movie'
+		)
+	})
+
+
+	// Unknown type (default when no type can be determined)
+	it( 'Unknown type #1 - Minimal release with no type signals', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Random.Release.Name-GROUP' ).toString(),
+			'Title: Random Release Name / Group: GROUP / Type: Unknown'
+		)
+	})
+
+	it( 'Unknown type #2 - Only group, no recognizable attributes', () =>
+	{
+		assert.equal(
+			ReleaseParser( 'Something.Else.Here-NOGROUP' ).toString(),
+			'Title: Something Else Here / Group: NOGROUP / Type: Unknown'
+		)
+	})
+
+	it( 'Regression #1 - Null episode should not crash title parsing', () =>
+	{
+		assert.doesNotThrow( () =>
+			ReleaseParser( 'Some.Show.S01E02.Special.Extended.Edition.1080p.WEB.x264-GRP', 'tv' ).toString()
+		)
+	})
+
+	it( 'Regression #2 - Invalid group chars should not break language regex', () =>
+	{
+		assert.doesNotThrow( () =>
+			ReleaseParser( 'Some.Movie.2024.German.1080p.WEB-DL.x264-Bad[Grp', 'movie' ).toString()
+		)
+	})
 })

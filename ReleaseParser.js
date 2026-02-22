@@ -40,6 +40,30 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		'country'		: null, // Release country
 		'type'			: null
 	}
+
+	// Normalize release name for consistent parsing
+	// Handle parenthesized or bracketed group notation at end: "Name (GROUP)" or "Name [GROUP]" -> "Name-GROUP"
+	
+	// Try parentheses first - look for (GROUP) with separator before
+	let groupMatch = releaseName.match( /[\s._]\(([A-Za-z0-9_.\[\]]+)\)$/ )
+	
+	// For square brackets: only convert if NOT part of an existing dash-prefixed group
+	// Skip conversion only if pattern is -WORD[...] where WORD contains no separators
+	if ( !groupMatch && !releaseName.match( /-\w+\[[^\]]+\]$/ ) )
+	{
+		groupMatch = releaseName.match( /[\s._]?\[([A-Za-z0-9_.\[\]]+)\]$/ )
+	}
+	
+	// Apply conversion if found and not purely numeric (e.g., not a year)
+	if ( groupMatch && !/^\d+$/.test( groupMatch[1] ) )
+	{
+		releaseName = releaseName.slice( 0, releaseName.length - groupMatch[0].length ) + '-' + groupMatch[1]
+	}
+	// Replace spaces with dots for uniform separator handling
+	releaseName = releaseName.replace( /\s+/g, '.' )
+	// Update stored release name so internal methods use the normalized version
+	data.release = releaseName
+
 	/**
 	 * Object toString() override: allows the object to decide how it will react when it is treated like a string.
 	 *
@@ -188,7 +212,16 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 			languageName.forEach ( (name) =>
 			{
 				// Insert current lang pattern
-				let newRegexPattern = regexPattern.replace( '%language_pattern%', name ).toRegExp()
+				let newRegexPattern = null
+
+				try
+				{
+					newRegexPattern = regexPattern.replace( '%language_pattern%', name ).toRegExp()
+				}
+				catch ( _err )
+				{
+					return
+				}
 
 				// Check for language tag (exclude "grand" for formula1 rls)
 				let matches = releaseName.match( newRegexPattern )
@@ -786,8 +819,8 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		let type = guessTypeByParsedAttributes()
 		// 2nd: no type found? guess by section
 		type = !type ? guessTypeBySection( section ) : type
-		// 3rd: set parsed type or default to Movie
-		type = !type ? 'Movie' : type
+		// 3rd: set parsed type or default to Unknown
+		type = !type ? 'Unknown' : type
 
 		set( 'type', type )
 	}
@@ -1205,9 +1238,18 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 				// and it isn't always numeric: 8 / e8 / e08
 				if ( titleExtra && titleExtra.replaceAll( /[a-z]+/gi, '' ).isNumeric() )
 				{
+					const parsedEpisode = get( 'episode' )
+					const parsedTitleExtraEpisode = parseInt( titleExtra.replaceAll( /[a-z]+/gi, '' ) )
+					const hasEpisode =
+						Array.isArray( parsedEpisode )
+							? parsedEpisode.includes( parsedTitleExtraEpisode )
+							: typeof parsedEpisode === 'string'
+								? parsedEpisode.includes( parsedTitleExtraEpisode.toString() )
+								: parsedEpisode === parsedTitleExtraEpisode
+
 					if (
 						titleExtra.length <= 3 &&
-						get( 'episode' ).includes( parseInt( titleExtra.replaceAll( /[a-z]+/gi, '' ) ) )
+						hasEpisode
 					)
 					{
 						titleExtra = ''
@@ -1988,7 +2030,7 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 						break
 
 					case 'group':
-						attributes.push( informationValue )
+						attributes.push( escapeRegexValue( informationValue ) )
 						break
 
 					case 'language':
@@ -2101,6 +2143,18 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		} )
 
 		return regexPattern
+	}
+
+	/**
+	 * Escape regex special chars for dynamic values that should be matched literally.
+	 *
+	 * @private
+	 * @param {string} value - Raw value.
+	 * @return {string} Escaped value.
+	 */
+	const escapeRegexValue = ( value = '' ) =>
+	{
+		return value.toString().replace( /[.*+?^${}()|[\]\\/]/g, '\\$&' )
 	}
 
 	/**
