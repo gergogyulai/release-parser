@@ -323,6 +323,42 @@ describe( 'ReleaseParser', function()
 		)
 	})
 
+	it( 'TV #7b - Whole season token should not bleed into title', () =>
+	{
+		const parsed = ReleaseParser( 'Breaking.Bad.Season.3.Complete.720p.BRrip.Sujaidr', 'tv' ).data
+
+		assert.equal( parsed.title, 'Breaking Bad' )
+		assert.equal( parsed.season, 3 )
+		assert.equal( parsed.episode, null )
+		assert.equal( parsed.source, 'BDRip' )
+		assert.equal( parsed.resolution, '720p' )
+	})
+
+	it( 'TV #7c - Multi-season pack range should not bleed into title/titleExtra', () =>
+	{
+		const parsed = ReleaseParser( 'Breaking.Bad.(2008).Season.1-5.S01-S05.1080p.BluRay.x265.HEVC-GRP', 'tv' ).data
+
+		assert.equal( parsed.title, 'Breaking Bad' )
+		assert.equal( parsed.titleExtra, null )
+		assert.equal( parsed.year, 2008 )
+		assert.equal( parsed.season, 1 )
+		assert.equal( parsed.episode, null )
+		assert.equal( parsed.source, 'Bluray' )
+		assert.equal( parsed.format, 'x265' )
+		assert.equal( parsed.resolution, '1080p' )
+	})
+
+	it( 'TV #7d - Numeric show title should survive multi-season cleanup', () =>
+	{
+		const parsed = ReleaseParser( 'Babylon.5.Season.1-5.S01-S05.1080p.BluRay.x265-TEST', 'tv' ).data
+
+		assert.equal( parsed.title, 'Babylon 5' )
+		assert.equal( parsed.titleExtra, null )
+		assert.equal( parsed.source, 'Bluray' )
+		assert.equal( parsed.format, 'x265' )
+		assert.equal( parsed.resolution, '1080p' )
+	})
+
 	it( 'TV #8 - Episode is 0 (needs dirfix but works)', () =>
 	{
 		assert.equal(
@@ -909,14 +945,48 @@ describe( 'ReleaseParser', function()
 		)
 	})
 
-	it( 'Regression #1 - Null episode should not crash title parsing', () =>
+	it( 'Regression #1 - Bracketed metadata should parse year/source/title', () =>
+	{
+		const parsed = ReleaseParser( 'Interstellar.[2014,.BDRip].Dub' ).data
+
+		assert.equal( parsed.title, 'Interstellar' )
+		assert.equal( parsed.year, 2014 )
+		assert.equal( parsed.source, 'BDRip' )
+		assert.equal( parsed.group, 'NOGRP' )
+	})
+
+	it( 'Regression #2 - Bracketed year should not truncate movie title', () =>
+	{
+		const parsed = ReleaseParser( 'Children.of.Men.[2006].720p.BRRiP.x264.AAC.-ExtraTorrentRG' ).data
+
+		assert.equal( parsed.title, 'Children of Men' )
+		assert.equal( parsed.year, 2006 )
+		assert.equal( parsed.resolution, '720p' )
+		assert.equal( parsed.group, 'ExtraTorrentRG' )
+	})
+
+	it( 'Regression #3 - Dot-slash separators should not block TV parsing', () =>
+	{
+		const parsed = ReleaseParser( 'Breaking.Bad./.S2E1-13.(13).(Vince.Gilligan).[2009,.BDRip.1080p].Dub.(Selena.International).+.MVO.(FoxCrime./.Amedia).+.DVO.(LostFilm,.).+.AVO.(.«Goblin».).+.Original.(Eng).+.Sub.(Rus,.Eng)' ).data
+
+		assert.equal( parsed.type, 'TV' )
+		assert.equal( parsed.title, 'Breaking Bad' )
+		assert.equal( parsed.season, 2 )
+		assert.equal( parsed.episode, '1-13' )
+		assert.equal( parsed.year, 2009 )
+		assert.equal( parsed.source, 'BDRip' )
+		assert.equal( parsed.resolution, '1080p' )
+		assert.equal( parsed.group, 'NOGRP' )
+	})
+
+	it( 'Regression #4 - Null episode should not crash title parsing', () =>
 	{
 		assert.doesNotThrow( () =>
 			ReleaseParser( 'Some.Show.S01E02.Special.Extended.Edition.1080p.WEB.x264-GRP', 'tv' ).toString()
 		)
 	})
 
-	it( 'Regression #2 - Invalid group chars should not break language regex', () =>
+	it( 'Regression #5 - Invalid group chars should not break language regex', () =>
 	{
 		assert.doesNotThrow( () =>
 			ReleaseParser( 'Some.Movie.2024.German.1080p.WEB-DL.x264-Bad[Grp', 'movie' ).toString()

@@ -59,6 +59,19 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 	{
 		releaseName = releaseName.slice( 0, releaseName.length - groupMatch[0].length ) + '-' + groupMatch[1]
 	}
+	// Normalize common P2P/torrent metadata delimiters so existing regexes can parse
+	// bracketed blocks like "[2024,.WEB-DL.1080p]" and "./." separator artifacts.
+	// Keep a standard trailing "-GROUP" suffix untouched (e.g. "-PiRaTeS[TGx]").
+	const trailingGroupMatch = releaseName.match( /-([\w.\[\]]+)$/i )
+	const trailingGroup = trailingGroupMatch ? trailingGroupMatch[0] : ''
+	let releaseNameCore = trailingGroup ? releaseName.slice( 0, -trailingGroup.length ) : releaseName
+
+	releaseNameCore = releaseNameCore
+		.replace( /\[([^\]]+)\]/g, ( _match, content ) => '.' + content.replace( /,/g, '.' ) + '.' )
+		.replace( /\.\//g, '..' )
+		.replace( /\/\./g, '..' )
+
+	releaseName = releaseNameCore + trailingGroup
 	// Replace spaces with dots for uniform separator handling
 	releaseName = releaseName.replace( /\s+/g, '.' )
 	// Update stored release name so internal methods use the normalized version
@@ -2239,6 +2252,43 @@ const ReleaseParser = /** @lends module:ReleaseParser */ ( releaseName, section 
 		else if ( type === 'bookware' )
 		{
 			set( 'flags', null )
+		}
+
+		// Whole-season TV packs can bleed season tokens into title/titleExtra when title parsing
+		// falls back to generic patterns.
+		if ( type === 'tv' && _title && get( 'season' ) && !get( 'episode' ) )
+		{
+			const seasonNumber = get( 'season' ).toString()
+			const seasonSuffix = new RegExp( `\\s+(?:season|saison|staffel|temp)\\s*0*${seasonNumber}$`, 'i' )
+			if ( seasonSuffix.test( _title ) )
+			{
+				_title = _title.replace( seasonSuffix, '' ).trim()
+				set( 'title', _title || get( 'title' ) )
+			}
+
+			const releaseValue = get( 'release' ) || ''
+			const seasonRangeWord = releaseValue.match( /(?:^|[._(-])(?:season|saison|staffel|temp)[._-]?0*(\d+)[._-]+0*(\d+)(?=[._)-])/i )
+			const seasonRangeShort = releaseValue.match( /(?:^|[._(-])s0*(\d+)[._-]+s0*(\d+)(?=[._)-])/i )
+			const titleExtra = get( 'titleExtra' )
+			const rangeEnd = seasonRangeShort ? seasonRangeShort[2] : seasonRangeWord ? seasonRangeWord[2] : null
+
+			if ( rangeEnd && titleExtra )
+			{
+				const extraLooksLikeSeasonRangeEnd = new RegExp( `^s0*${rangeEnd}(?:\\b|\\s|\\()`, 'i' )
+
+				if ( extraLooksLikeSeasonRangeEnd.test( titleExtra ) )
+				{
+					set( 'titleExtra', null )
+
+					// If the upper bound of "Season 1-5" bled into the title, strip only the extra trailing token.
+					const titleWithRangeBleed = new RegExp( `\\s+0*${rangeEnd}$` )
+					const currentTitle = get( 'title' )
+					if ( seasonRangeWord && currentTitle && titleWithRangeBleed.test( currentTitle ) )
+					{
+						set( 'title', currentTitle.replace( titleWithRangeBleed, '' ).trim() )
+					}
+				}
+			}
 		}
 
 		if ( type === 'movie' || type === 'xxx' || type === 'tv' )
