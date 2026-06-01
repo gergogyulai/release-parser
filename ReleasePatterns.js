@@ -497,7 +497,7 @@ const patterns =
 		'DLC': '(?:incl.)?DLCS?(?!.?(?:Unlocker|Pack))?', // games
 		'DOX': 'D[O0]X',
 		'Docu': 'DO[CK]U?',
-		'Dolby Vision': [ 'DV', 'DoVi' ],
+		'Dolby Vision': [ 'DV', 'DoVi', 'Dolby.?Vision' ],
 		'Dubbed': [ '(?<!(?:line|mic|micro|tv).)Dubbed', 'E.?Dubbed', '(?!over|thunder)[a-z]+dub' ],
 		'Extended': 'EXTENDED(?:.CUT|.Edition)?(?!.MIX)',
 		'Final': 'FINAL[._-]?(%language%|%flags%)?',
